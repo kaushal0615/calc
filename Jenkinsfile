@@ -10,6 +10,13 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh 'mvn test'
+                }
+            }
+        }
         stage('Build docker image'){
             steps{
                 script{
@@ -27,5 +34,25 @@ pipeline {
                 }
             }
         }
+        stage('Remove existing container') {
+            steps {
+                script {
+                    // Stop and remove the existing container named "calc"
+                    sh 'docker stop calc || true'
+                    sh 'docker rm calc || true'
+                }
+            }
+        }
+        stage('Run Ansible Playbook') {
+            steps {
+                script {
+                    ansiblePlaybook(
+                        playbook: 'deploy.yml',
+                        inventory: 'inventory'
+                     )
+                }
+            }
+        }
+        
     }
 }
