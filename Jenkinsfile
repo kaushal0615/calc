@@ -17,14 +17,14 @@ pipeline {
                 }
             }
         }
-        stage('Build docker image'){
+        stage('Build the Docker Image'){
             steps{
                 script{
                     sh 'docker build -t kaushal15/demo .'
                 }
             }
         }
-        stage('push image to docker'){
+        stage('Push the Image to Docker'){
             steps{
                 script{
                     withCredentials([string(credentialsId: 'kp07', variable: 'kaushal')]) {
@@ -34,7 +34,7 @@ pipeline {
                 }
             }
         }
-        stage('Remove existing container') {
+        stage('Remove the Existing Container') {
             steps {
                 script {
                     // Stop and remove the existing container named "calc"
